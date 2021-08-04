@@ -20,5 +20,6 @@ router.post('/todos',async (req,res)=>{
     
 })
 
+console.log("For Testing")
 
 module.exports = router
