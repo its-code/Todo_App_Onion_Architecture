@@ -1,6 +1,6 @@
 const express =  require("express")
 const router = express.Router()
-const todo = require("../models/todo")
+const todos = require("../models/todo")
 
 // Routers for todos (HTTP Method : get,post,patch and delete)
 
@@ -8,7 +8,6 @@ router.post('/todos',async (req,res)=>{
 
     const todo = new todos({
         ...req.body,
-        owner: req.user._id
     })
 
     try{
@@ -20,6 +19,5 @@ router.post('/todos',async (req,res)=>{
     
 })
 
-console.log("For Testing")
 
 module.exports = router

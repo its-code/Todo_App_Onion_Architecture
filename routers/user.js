@@ -3,7 +3,7 @@ const user = require("../models/user")
 const router = new express.Router() 
 
 
-// Routers for tasks (HTTP Method : post,get,patch and delete)
+// Routers for users (HTTP Method : post,get,patch and delete)
 
 router.post('/users',async (req,res)=>{  
     const me = new user(req.body)
