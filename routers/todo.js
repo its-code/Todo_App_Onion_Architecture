@@ -1,13 +1,14 @@
 const express =  require("express")
 const router = express.Router()
 const todos = require("../models/todo")
+const auth = require("../middleware/auth")
 
 // Routers for todos (HTTP Method : get,post,patch and delete)
 
-router.post('/todos',async (req,res)=>{ 
-
+router.post('/todos',auth,async (req,res)=>{  
     const todo = new todos({
-        ...req.body
+        ...req.body,
+        owner: req.user._id
     })
 
     try{
@@ -16,9 +17,10 @@ router.post('/todos',async (req,res)=>{
     }catch(e){
        res.status(500).send(e)
     }
-    
 })
 
+
+// get todos?completed = true etc
 
 router.get('/todos',auth,async (req,res)=>{
 
@@ -69,7 +71,6 @@ router.get('/todo/:id',auth,async (req,res)=>{
       }
 })
 
-
 router.patch('/todos/:id',auth,async (req,res)=>{
     
     const updates = Object.keys(req.body) 
@@ -106,6 +107,5 @@ router.delete('/todos/:id',auth, async (req,res)=>{
         res.status(400).send(e)
     }
 })
-
 
 module.exports = router
