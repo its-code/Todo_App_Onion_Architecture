@@ -8,7 +8,6 @@ const todoController = require("../controllers/todo.controller")
 
 router.post('/todos',auth, todoController.createTodo)
 
-
 // get todos?completed = true etc
 
 router.get('/todos',auth, todoController.findTodos)

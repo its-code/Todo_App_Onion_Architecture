@@ -11,11 +11,11 @@ router.post('/users',userController.createUser)
 
 router.post('/users/login',userController.userLogin)
 
-router.post('/users/logout', auth,userController.userLogOut)
+router.post('/users/logout',auth,userController.userLogOut)
 
 router.get('/users/:id',userController.getFindUser)
 
-router.patch('/users/me', auth,userController.updateUser)
+router.patch('/users/me',auth,userController.updateUser)
 
 router.delete('/users/me',auth,userController.deleteUser)
 
