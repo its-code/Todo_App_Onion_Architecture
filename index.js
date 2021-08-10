@@ -1,7 +1,7 @@
 
-const app = require('./app')
+const app = require('./http/app')
 
-const port = 3000
+const port = process.env.PORT
 
 app.listen(port,()=>{
     console.log("Running uo on the port: "+port)

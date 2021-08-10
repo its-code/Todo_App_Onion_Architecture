@@ -12,9 +12,11 @@
     "mongoose": "^5.13.5",
     "validator": "^13.6.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "env-cmd": "^10.1.0"
+  },
   "scripts": {
-    "start": "node index.js",
+    "start": "env-cmd -f ./config/dev.env node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
