@@ -1,5 +1,5 @@
 const user = require("../../models/user")
-
+const User = require("../../services/user.service")
 class UserController{
 
     static async createUser(req,res){

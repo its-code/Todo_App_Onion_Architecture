@@ -1,16 +1,14 @@
 const todos = require("../../models/todo")
-
+const TodoService = require("../../services/todo.service")
 
 class TodoController {
 
     static async createTodo(req,res){
-        const todo = new todos({
-            ...req.body,
-            owner: req.user._id
-        })
-    
+
+        const {discription,name} = req.body;
+        
         try{
-           await todo.save()
+            const todo = await TodoService.createTodo({discription,name,owner: req.user._id})
            res.status(201).send(todo)
         }catch(e){
            res.status(500).send(e)
