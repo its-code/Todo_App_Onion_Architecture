@@ -1,4 +1,4 @@
-const todos = require("../../models/todo")
+const todos = require("../../db/models/todo")
 const TodoService = require("../../services/todo.service")
 
 class TodoController {
