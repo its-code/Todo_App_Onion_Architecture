@@ -1,5 +1,5 @@
-const todos = require("../db/models/todo");
-const TodoRepository = require("../db/repository/todo.repository");
+const todos = require("../../db/models/todo");
+const TodoRepository = require("../../db/repository/todo.repository");
 
 class TodoService {
     

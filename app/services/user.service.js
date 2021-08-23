@@ -1,5 +1,5 @@
-const users = require("../db/models/user")
-const UserRepository = require("../db/repository/user.repository")
+const users = require("../../db/models/user")
+const UserRepository = require("../../db/repository/user.repository")
 
 class UserService{
     
