@@ -1,8 +1,7 @@
 
-class Pagination{
 
-    static async paginatedResults(model) {
-        return (req, res, next) => {
+    function paginatedResults(model) {
+        return async (req, res, next) => {
             const page = parseInt(req.query.page)
             const limit = parseInt(req.query.limit)
         
@@ -10,7 +9,6 @@ class Pagination{
             const endIndex = page * limit
         
             const results = {}
-        
             if (endIndex < await model.countDocuments().exec()) {
                 results.next = {
                 page: page + 1,
@@ -34,7 +32,6 @@ class Pagination{
         }
     }
 
-}
 
 
-module.exports = Pagination
+module.exports = paginatedResults

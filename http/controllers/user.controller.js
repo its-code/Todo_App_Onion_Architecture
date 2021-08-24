@@ -1,19 +1,17 @@
 const user = require("../../db/models/user")
-const User = require("../../services/user.service")
+const UserService = require("../../app/services/user.service")
+const catchAsync = require("../utils/catchasync")
+const httpStatus = require("http-status")
+
+
 class UserController{
 
-    static async createUser(req,res){
 
-        const me = new user(req.body)
-        try{
-          await me.save()
-          const token = await me.generateAuthToken()
-          res.status(201).send({me,token})  
-        }catch(e){
-          res.status(500).send(e)  
-        }
-
-    }
+    static createUser = catchAsync(async (req,res) => {
+            const user = await UserService.createUser(req.body);
+            res.status(httpStatus.CREATED).send(user);
+    });
+    
 
     static async userLogin(req,res){
         try{

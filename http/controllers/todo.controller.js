@@ -1,5 +1,5 @@
 const todos = require("../../db/models/todo")
-const TodoService = require("../../services/todo.service")
+const TodoService = require("../../app/services/todo.service")
 
 class TodoController {
 
@@ -16,29 +16,12 @@ class TodoController {
     }
 
     static async findTodos(req,res){
-        const match = {}
-        const sort = []
-    
-        if(req.query.completed){
-            match.completed = req.query.completed === 'true'
-        }
-        if(req.query.sortBy){
-            const parts = req.query.sortBy.split(':')
-            sort[parts[0]] = parts[1] === 'desc'? -1 : 1
-        }
-    
+     
         try{
-            await req.user.populate({
-                path: 'todos',
-                match,
-                option: {
-                    limit: parseInt(req.query.limit),
-                    skip: parseInt(req.query.skip),
-                    sort
-                }
-            }).execPopulate()
+            await req.user.populate('todos').execPopulate()
     
             res.send(req.user.todos)
+            res.json(res.paginatedResults)
             }catch(e){
                 res.status(400).send(e)
             }
