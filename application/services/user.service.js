@@ -1,5 +1,5 @@
-const User = require("../../db/models/user")
-const UserRepository = require("../../db/repository/user.repository")
+const User = require("../../db/mongoose/models/user")
+const UserRepository = require("../../db/mongoose/repository/user.repository")
 const httpStatus = require("http-status")
 const ApiError = require("../../http/utils/ApiError")
 

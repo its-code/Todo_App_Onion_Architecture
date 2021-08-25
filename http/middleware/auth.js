@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken")
-const User = require("../../db/models/user")
+const User = require("../../db/mongoose/models/user")
 
 const auth =async (req,res,next)=>{
     try{

@@ -1,5 +1,5 @@
-const user = require("../../db/models/user")
-const UserService = require("../../app/services/user.service")
+const user = require("../../db/mongoose/models/user")
+const UserService = require("../../application/services/user.service")
 const catchAsync = require("../utils/catchasync")
 const httpStatus = require("http-status")
 

@@ -1,5 +1,5 @@
-const todos = require("../../db/models/todo")
-const TodoService = require("../../app/services/todo.service")
+const todos = require("../../db/mongoose/models/todo")
+const TodoService = require("../../application/services/todo.service")
 
 class TodoController {
 
@@ -18,9 +18,7 @@ class TodoController {
     static async findTodos(req,res){
      
         try{
-            await req.user.populate('todos').execPopulate()
-    
-            res.send(req.user.todos)
+            
             res.json(res.paginatedResults)
             }catch(e){
                 res.status(400).send(e)
