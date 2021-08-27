@@ -1,34 +1,18 @@
 class Todo {
 
-    constructor(name,discription){
+    constructor(name,discription,owner){
         this.name = name;
         this.discription = discription;
+        this.owner = owner;
     }
 
-    setTodoName(name){
-        this.name = name;
+    static createFromObject(userObj){
+        return new Todo(
+            userObj.name,
+            userObj.discription,
+            userObj.owner,
+        )
     }
-    
-    setTodoDiscription(discription){
-        this.discription = discription;
-    }
-
-    static TodoObject(todoObj){
-        const todo = new Todo(
-            todoObj.name,
-            todoObj.discription
-        );
-        
-        todo.setTodoName(todoObj.name);
-
-        todo.setTodoDiscription(todoObj.discription);
-
-        
-        return todo;
-    }
-    
-    
-
 } 
 
 module.exports = Todo

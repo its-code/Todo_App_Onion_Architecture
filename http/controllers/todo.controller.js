@@ -1,49 +1,34 @@
 const todos = require("../../db/mongoose/models/todo")
 const TodoService = require("../../application/services/todo.service")
+const catchAsync = require("../utils/catchasync")
+const httpStatus = require("http-status")
 
 class TodoController {
 
-    static async createTodo(req,res){
+    static createTodo = catchAsync(async (req,res) => {
 
         const {discription,name} = req.body;
-        
-        try{
-            const todo = await TodoService.createTodo({discription,name,owner: req.user._id})
-           res.status(201).send(todo)
-        }catch(e){
-           res.status(500).send(e)
-        }
-    }
+        const todo = await TodoService.createTodo({discription,name,owner: req.user._id})
+        res.status(httpStatus.CREATED).send(todo);
 
-    static async findTodos(req,res){
+    });
+
+    static findTodos = catchAsync(async (req,res) =>{
      
-        try{
+        res.status(httpStatus.CREATED).json(res.paginatedResults)
+    });
+
+    static findOneTodo = catchAsync(async (req,res) => {
             
-            res.json(res.paginatedResults)
-            }catch(e){
-                res.status(400).send(e)
-            }
-    }
-
-    static async findOneTodo(req,res){
-        const _id = req.params.id
-
-
-        try{
-            // const todoID= await todos.findById(_id)
+            const _id = req.params.id
             const todoID = await todos.findOne({ _id , 'owner': req.user._id})      
-            console.log(todoID)    
             if(!todoID){
               return res.status(404).send()
             }
-            res.send(todoID)
-      
-          }catch(e){
-              res.status(400).send(e)
-          }
-    }
+            res.status(httpStatus.CREATED).send(todoID)
+    });
 
-    static async updateTodo(req,res){
+    static updateTodo = catchAsync(async (req,res) => {
 
         const updates = Object.keys(req.body) 
         const propertiestodo = ['name','discription']
@@ -51,34 +36,25 @@ class TodoController {
     
         if(!isValid)
             return res.status(400).send()
-    
-        try{
-    
-          const todoUp = await todos.findOne({_id: req.params.id, owner: req.user._id})  
-        //   const todoUp = await todos.findByIdAndUpdate(req.params.id, req.body , { new:true, runValidators: true})
-          if(!todoUp){
-             return res.status(404).send()
-          }
-          updates.forEach( update => todoUp[update] = req.body[update] )
-    
-          await todoUp.save()
-          res.send(todoUp)
-        }catch(e){
-            res.status(400).send(e)
+        
+        const todoUp = await todos.findOne({_id: req.params.id, owner: req.user._id})  
+        if(!todoUp){
+            return res.status(404).send()
         }
-    }
+        updates.forEach( update => todoUp[update] = req.body[update] )
 
-    static async deleteTodo(req,res){
-        try{
-            const deltodo = await todos.findOneAndDelete({ _id:req.params.id, owner: req.user._id })
-            if(!deltodo){
-                return res.status(404).send()
-            } 
-            res.send(deltodo)
-        }catch(e){
-            res.status(400).send(e)
-        }
-    }
+        await todoUp.save()
+        res.status(httpStatus.CREATED).send(todoUp)
+    });
+
+    static deleteTodo = catchAsync(async (req,res) => {
+        const deltodo = await todos.findOneAndDelete({ _id:req.params.id, owner: req.user._id })
+        if(!deltodo){
+            return res.status(404).send()
+        } 
+        res.status(httpStatus.CREATED).send(deltodo)
+    });
+    
 }
 
 module.exports = TodoController
