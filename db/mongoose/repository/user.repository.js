@@ -1,6 +1,6 @@
 
 const userEntity = require("../../../domain/Core/user/userEntity")
-const ApiError = require("../../http/utils/ApiError")
+// const ApiError = require("../../http/utils/")
 
 class UserRepository{
     

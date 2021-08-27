@@ -14,45 +14,28 @@ class TodoController {
     });
 
     static findTodos = catchAsync(async (req,res) =>{
-     
-        res.status(httpStatus.CREATED).json(res.paginatedResults)
+        const todo = await TodoService.findTodos();
+        res.status(httpStatus.OK).send(todo)
     });
 
     static findOneTodo = catchAsync(async (req,res) => {
             
-            const _id = req.params.id
-            const todoID = await todos.findOne({ _id , 'owner': req.user._id})      
-            if(!todoID){
-              return res.status(404).send()
-            }
-            res.status(httpStatus.CREATED).send(todoID)
+        const _id = req.params.id
+        const todoID = await TodoService.findOneTodo({_id, owner: req.user._id})
+        res.status(httpStatus.OK).send(todoID)
     });
 
     static updateTodo = catchAsync(async (req,res) => {
-
+        const {id} = req.params;
         const updates = Object.keys(req.body) 
-        const propertiestodo = ['name','discription']
-        const isValid = updates.every( update => propertiestodo.includes(update))
-    
-        if(!isValid)
-            return res.status(400).send()
-        
-        const todoUp = await todos.findOne({_id: req.params.id, owner: req.user._id})  
-        if(!todoUp){
-            return res.status(404).send()
-        }
-        updates.forEach( update => todoUp[update] = req.body[update] )
-
-        await todoUp.save()
-        res.status(httpStatus.CREATED).send(todoUp)
+        const todo = await TodoService.updateTodo({id,updates,owner: req.user._id})
+        res.status(httpStatus.OK).send(todo)
     });
 
     static deleteTodo = catchAsync(async (req,res) => {
-        const deltodo = await todos.findOneAndDelete({ _id:req.params.id, owner: req.user._id })
-        if(!deltodo){
-            return res.status(404).send()
-        } 
-        res.status(httpStatus.CREATED).send(deltodo)
+        const {id} = req.params;
+        const deleteTodo = await TodoService.deleteTodo({id,owner: req.user._id})
+        res.status(httpStatus.OK).send(deleteTodo)
     });
     
 }

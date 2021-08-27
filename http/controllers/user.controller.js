@@ -15,47 +15,36 @@ class UserController{
 
     static userLogin = catchAsync(async (req,res) => {
 
-        const userAuth = await user.findByCredentials(req.body.email,req.body.password)
-        const token = await userAuth.generateAuthToken()
-
-        res.status(httpStatus.OK).send({userAuth, token})
+        const {email,password} = req.body;
+        const userAuth = await UserService.userLogin({email,password});
+        res.status(httpStatus.OK).send(userAuth)
     });
 
     static userLogOut = catchAsync(async (req,res) => {
 
-        req.user.tokens = req.user.tokens.filter(token => token.token !== req.token) 
-        await req.user.save()
-        res.status(httpStatus.OK).send()
-
+        const {tokens} = req.user;
+        const userlogOut = await UserService.userLogOut({tokens})
+        res.status(httpStatus.OK).send(this.userLogOut)
     });
 
     static getFindUser = catchAsync(async (req,res) => {
 
         const _id = req.params.id
-        const userID= await user.findById(_id)
-            
-        if(!userID){
-            return res.status(404).send()
-        }
+        const userID = await UserService.getFindUser(_id)
         res.status(httpStatus.OK).send(userID)
     });
 
+
     static updateUser = catchAsync(async (req,res) => {
 
-        const updates = Object.keys(req.body) 
-        const propertiesUsers = ['name','email','password','age']
-        const isValid = updates.every( update => propertiesUsers.includes(update))
-    
-        if(!isValid)
-            return res.status(400).send()
+        const updates = Object.keys(req.body);
+        const user = req.user;
+        const body = req.body;
+        const userUpd = await UserService.updateUser({updates,user,body});
 
-        updates.forEach((update)=>{
-            req.user[update] = req.body[update]
-        })
-
-        await req.user.save()  
-        res.status(httpStatus.OK).send(req.user)
+        res.status(httpStatus.OK).send(userUpd)
     });
+
 
     static deleteUser = catchAsync(async (req,res) => {
 
@@ -64,6 +53,6 @@ class UserController{
     });
 
 } 
-
+ 
 module.exports = UserController
 
