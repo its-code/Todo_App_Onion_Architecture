@@ -7,34 +7,35 @@ class TodoController {
 
     static createTodo = catchAsync(async (req,res) => {
 
-        const {discription,name} = req.body;
-        const todo = await TodoService.createTodo({discription,name,owner: req.user._id})
+        const {body:{discription,name},user:{_id:owner}} = req;
+        const todo = await TodoService.createTodo({discription,name,owner})
         res.status(httpStatus.CREATED).send(todo);
 
     });
 
     static findTodos = catchAsync(async (req,res) =>{
-        const todo = await TodoService.findTodos();
+        
+        const todo = await TodoService.findTodos(res);
         res.status(httpStatus.OK).send(todo)
     });
 
     static findOneTodo = catchAsync(async (req,res) => {
-            
-        const _id = req.params.id
-        const todoID = await TodoService.findOneTodo({_id, owner: req.user._id})
+
+        const {params: {id : _id}, user:{_id : owner}} = req;
+        const todoID = await TodoService.findOneTodo({_id, owner})
         res.status(httpStatus.OK).send(todoID)
     });
 
     static updateTodo = catchAsync(async (req,res) => {
-        const {id} = req.params;
-        const updates = Object.keys(req.body) 
-        const todo = await TodoService.updateTodo({id,updates,owner: req.user._id})
+        const {params: {id},body,user:{_id: owner}} = req;
+        const updates = Object.keys(body)
+        const todo = await TodoService.updateTodo({id,updates,owner,body})
         res.status(httpStatus.OK).send(todo)
     });
 
     static deleteTodo = catchAsync(async (req,res) => {
-        const {id} = req.params;
-        const deleteTodo = await TodoService.deleteTodo({id,owner: req.user._id})
+        const {params: {id}, user:{_id:owner}} = req;
+        const deleteTodo = await TodoService.deleteTodo({id,owner})
         res.status(httpStatus.OK).send(deleteTodo)
     });
     

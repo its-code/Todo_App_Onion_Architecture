@@ -12,7 +12,7 @@ router.post('/todos',auth,todoController.createTodo)
 
 // get todos?completed = true etc
 
-router.get('/todos',auth, Pagination.paginatedResults(todos) ,todoController.findTodos)
+router.get('/todos',Pagination.paginatedResults(todos),auth,todoController.findTodos)
 
 router.get('/todo/:id',auth, todoController.findOneTodo)
 

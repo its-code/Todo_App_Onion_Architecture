@@ -1,7 +1,8 @@
 const User = require("../../db/mongoose/models/user")
 const UserRepository = require("../../db/mongoose/repository/user.repository")
 const httpStatus = require("http-status")
-const ApiError = require("../../http/utils/ApiError")
+const ApiError = require("../../http/utils/ApiError");
+const { deleteUser } = require("../../http/controllers/user.controller");
 
 class UserService{
     
@@ -19,7 +20,7 @@ class UserService{
 
     static async userLogin(userBody){
 
-        const userAuth = await user.findByCredentials(userBody.email,userBody.password)
+        const userAuth = await User.findByCredentials(userBody.email,userBody.password)
         const token = await userAuth.generateAuthToken()
         
         const loginObj = {userAuth,token}
@@ -28,19 +29,20 @@ class UserService{
     }
 
     static async userLogOut(logOutObj){
-        const tokens = logOutObj.tokens
-        tokens = tokens.filter(token => token.token !== req.token) 
-        await req.user.save()
+        let tokens = logOutObj.tokens
+        const user = logOutObj.user;
+        tokens = tokens.filter(token => token.token !== logOutObj.token) 
+        await user.save()
 
         const resp = {
-            message : "User Sucessfully Log Out!!!"
+            message : "User Successfully Log Out!!!"
         }
         return resp;
     }
 
     static async getFindUser(id){
 
-        const userID= await user.findById(id)
+        const userID= await User.findById(id)
         if(!userID){
             throw new ApiError(httpStatus.NOT_FOUND,"No User Found against this ID")
         }
@@ -63,13 +65,23 @@ class UserService{
         await user.save()
         
         const response = {
-            message: "User Updated Sucessfully!!!"
+            message: "User Updated Successfully!!!"
         }
 
         return response;
     }
+
+    static async deleteUser(delUser){
+        
+        const user = delUser.user;
+        await user.remove()
+
+        const response = {
+            message: "User Deleted Successfully!!!"
+        }
+        return response;
+    }
+
 }
-
-
 
 module.exports = UserService

@@ -22,9 +22,10 @@ class UserController{
 
     static userLogOut = catchAsync(async (req,res) => {
 
+        const {user,token} = req
         const {tokens} = req.user;
-        const userlogOut = await UserService.userLogOut({tokens})
-        res.status(httpStatus.OK).send(this.userLogOut)
+        const userlogOut = await UserService.userLogOut({tokens,user,token})
+        res.status(httpStatus.OK).send(userlogOut)
     });
 
     static getFindUser = catchAsync(async (req,res) => {
@@ -38,8 +39,7 @@ class UserController{
     static updateUser = catchAsync(async (req,res) => {
 
         const updates = Object.keys(req.body);
-        const user = req.user;
-        const body = req.body;
+        const {user,body} = req;
         const userUpd = await UserService.updateUser({updates,user,body});
 
         res.status(httpStatus.OK).send(userUpd)
@@ -48,8 +48,9 @@ class UserController{
 
     static deleteUser = catchAsync(async (req,res) => {
 
-        await req.user.remove()
-        res.status(httpStatus.NO_CONTENT).send(req.user)
+        const {user} = req;
+        const delUser = await UserService.deleteUser({user})
+        res.status(httpStatus.OK).send(delUser)
     });
 
 } 
