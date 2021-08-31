@@ -1,46 +1,44 @@
 
 const userEntity = require("../../../domain/Core/user/userEntity")
-// const ApiError = require("../../http/utils/")
-
+const User = require("../models/user");
+const ApiError = require("../../../http/utils/ApiError");
+const httpStatus = require("http-status");
 class UserRepository{
     
-    static async create(Model) {
-        return new Promise((resolve, reject) => {
-          Model.save(function(err, user) {
-            if (err) {
-              reject(err);
-            }
-            resolve(user);
-          });
-        });
-      }
+    static async create(userBody) {
 
-    static async find(Model, queryParams) {
-      try {
-        const user = await Model.find({})        
+      const me = new User(userBody)
+      await me.save()
+      const token = await me.generateAuthToken()  
+      return {me,token};
+      
+    }
 
-        if(!user){
-          return false
+    static async find(id){
+
+        const userID= await User.findById(id)
+        if(!userID){
+            throw new ApiError(httpStatus.NOT_FOUND,"No User Found against this ID")
         }
-        return userEntity.createFromObject(user);
-
-      } catch (error) {
-        throw new ApiError(httpStatus.BAD_REQUEST, error);
-      }
-
+        return userEntity.createFromObject(userID);
 
     }
+
+    static async update(userBody){
+      
+      const {updates,user,body} = userBody;
+
+      updates.forEach((update)=>{
+        user[update] = body[update]
+      })
+      
+      await user.save()
+    }
     
-    static async delete(Model, queryParams) {
-        return new Promise((resolve, reject) => {
-          Model.find({})
-            .limit(parseInt(queryParams.limit))
-            .exec(function(err, data) {
-              if (err) reject(err);
-              resolve(data);
-            });
-        });
+    static async delete(user) {
+        await user.remove();
     } 
+
       
 }
 

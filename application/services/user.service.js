@@ -2,20 +2,19 @@ const User = require("../../db/mongoose/models/user")
 const UserRepository = require("../../db/mongoose/repository/user.repository")
 const httpStatus = require("http-status")
 const ApiError = require("../../http/utils/ApiError");
-const { deleteUser } = require("../../http/controllers/user.controller");
 
 class UserService{
     
     static async createUser(userBody){
 
+
         if (await User.isEmailTaken(userBody.email)) {
             throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
         }
 
-        const me = new User(userBody)
-        await me.save()
-        const token = await me.generateAuthToken()  
-        return {me,token};
+        const me = await UserRepository.create(userBody);
+        
+        return me;
     }
 
     static async userLogin(userBody){
@@ -29,6 +28,7 @@ class UserService{
     }
 
     static async userLogOut(logOutObj){
+        
         let tokens = logOutObj.tokens
         const user = logOutObj.user;
         tokens = tokens.filter(token => token.token !== logOutObj.token) 
@@ -42,10 +42,8 @@ class UserService{
 
     static async getFindUser(id){
 
-        const userID= await User.findById(id)
-        if(!userID){
-            throw new ApiError(httpStatus.NOT_FOUND,"No User Found against this ID")
-        }
+        const userID = await UserRepository.find(id);
+      
         return userID;
     }
 
@@ -58,11 +56,7 @@ class UserService{
         if(!isValid)
             throw new ApiError(httpStatus.BAD_REQUEST, "Inputs are Invalid!!!")
 
-        updates.forEach((update)=>{
-            user[update] = body[update]
-        })
-
-        await user.save()
+        await UserRepository.update({updates,user,body})
         
         const response = {
             message: "User Updated Successfully!!!"
@@ -73,8 +67,8 @@ class UserService{
 
     static async deleteUser(delUser){
         
-        const user = delUser.user;
-        await user.remove()
+
+        await UserRepository.delete(delUser.user);
 
         const response = {
             message: "User Deleted Successfully!!!"

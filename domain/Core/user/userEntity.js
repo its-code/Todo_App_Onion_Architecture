@@ -1,20 +1,20 @@
 class User {
 
-    constructor(name,email,password,age,tokens){
+    constructor(_id,name,email,age,createdAt,updatedAt){
         this.name = name;
         this.email = email;
-        this.password = password;
         this.age = age;
-        this.tokens = tokens;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     static createFromObject(userObj){
         return new User(
             userObj.name,
             userObj.email,
-            userObj.password,
             userObj.age,
-            userObj.tokens
+            userObj.createdAt,
+            userObj.updatedAt
         )
     }
     
@@ -22,7 +22,6 @@ class User {
 
 module.exports = User;
 
-// ----------------------
 
 
 

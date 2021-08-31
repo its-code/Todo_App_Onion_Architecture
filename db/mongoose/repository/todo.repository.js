@@ -16,7 +16,8 @@ class TodoRepository{
       if(!todoID){
           throw new ApiError(httpStatus.NOT_FOUND,"You dont have Todo against this ID!!")
       }
-      return todoID;
+      
+      return todoEntity.createFromObject(todoID);
     }
 
     static async update(todoBody){
