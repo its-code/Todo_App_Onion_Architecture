@@ -6,11 +6,11 @@ const seedUsers = async () => {
 
     try {
 
-        // const countCollection = await User.find({});
+        const countCollection = await User.find({});
         
-        // if(countCollection.length > 1){
-        //     return 
-        // }
+        if(countCollection.length > 1){
+            return 
+        }
 
         const quantity = 10;
         const users = [];
@@ -26,11 +26,11 @@ const seedUsers = async () => {
             )
         }
 
-        // await User.remove()
+        await User.remove()
 
-        // users.forEach(user => {
-        //     User.create(user)
-        // })
+        users.forEach(user => {
+            User.create(user)
+        })
 
         console.log(users)
 
@@ -46,11 +46,11 @@ const seedTodos = async () => {
 
     try {
 
-        // const countCollection = await Todo.find({});
+        const countCollection = await Todo.find({});
         
-        // if(countCollection.length > 1){
-        //     return 
-        // }
+        if(countCollection.length > 1){
+            return 
+        }
         
         const quantity = 10;
         const todos = [];
@@ -66,11 +66,11 @@ const seedTodos = async () => {
         }
 
 
-        // await Todo.remove()
+        await Todo.remove()
 
-        // todos.forEach(todo => {
-        //     Todo.create(todo)
-        // })
+        todos.forEach(todo => {
+            Todo.create(todo)
+        })
         console.log(todos)
 
         console.log("Todo collection has been populated!!");

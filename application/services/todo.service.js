@@ -1,4 +1,3 @@
-const todos = require("../../db/mongoose/models/todo");
 const TodoRepository = require("../../db/mongoose/repository/todo.repository");
 const httpStatus = require("http-status")
 const ApiError = require("../../http/utils/ApiError")
