@@ -2,8 +2,8 @@ const express =  require("express")
 const router = express.Router()
 const auth = require("../middleware/auth")
 const todoController = require("../controllers/todo.controller")
-const Pagination = require("../../db/plugin/pagination.plugin")
-const todos = require("../../db/mongoose/models/todo")
+const Pagination = require("../../infra/db/plugin/pagination.plugin")
+const todos = require("../../infra/db/mongoose/models/todo")
 
 
 // Routers for todos (HTTP Method : get,post,patch and delete)
@@ -21,3 +21,7 @@ router.patch('/todos/:id',auth, todoController.updateTodo)
 router.delete('/todos/:id',auth, todoController.deleteTodo)
 
 module.exports = router
+
+
+
+

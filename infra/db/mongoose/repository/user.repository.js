@@ -1,15 +1,16 @@
 
-const userEntity = require("../../../domain/Core/user/userEntity")
+const userEntity = require("../../../../domain/Core/user/userEntity")
 const User = require("../models/user");
-const ApiError = require("../../../http/utils/ApiError");
-const httpStatus = require("http-status");
+const generateAuthToken = require("../../../utils/jwt")
+
+
 class UserRepository{
     
-    static async create(userBody) {
+    static async add(userBody) {
 
       const me = new User(userBody)
       await me.save()
-      const token = await me.generateAuthToken()  
+      const token = await generateAuthToken(me);  
       return {me,token};
       
     }
@@ -17,9 +18,6 @@ class UserRepository{
     static async find(id){
 
         const userID= await User.findById(id)
-        if(!userID){
-            throw new ApiError(httpStatus.NOT_FOUND,"No User Found against this ID")
-        }
         return userEntity.createFromObject(userID);
 
     }
@@ -35,8 +33,8 @@ class UserRepository{
       await user.save()
     }
     
-    static async delete(user) {
-        await user.remove();
+    static async remove(user) {
+      await user.remove();
     } 
 
       

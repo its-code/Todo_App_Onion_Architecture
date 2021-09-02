@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken")
-const User = require("../../db/mongoose/models/user")
+const User = require("../../infra/db/mongoose/models/user")
 const {JWT_SECRET} = require("../../config/auth.config")
 const auth =async (req,res,next)=>{
     try{
@@ -8,7 +8,7 @@ const auth =async (req,res,next)=>{
         const user =  await User.findOne({_id: decoded._id, 'tokens.token' :token })
 
         if(!user){
-            throw new Error
+            throw new Error()
         }
 
         req.token = token
@@ -19,4 +19,4 @@ const auth =async (req,res,next)=>{
     }
 }
 
-module.exports = auth
+module.exports = auth;

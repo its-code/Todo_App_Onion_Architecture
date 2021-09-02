@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 const todos = require('./todo')
 
 const userSchema = mongoose.Schema({
@@ -63,19 +62,6 @@ userSchema.methods.toJSON = function(){
   return userObject
 }
 
-// generating tokens for user auth
-
-userSchema.methods.generateAuthToken = async function(){
-  const user = this 
-  const token = jwt.sign({ _id: user._id.toString() },'thisissomething')
-
-  user.tokens = user.tokens.concat({token})
-
-  await user.save()
-  return token
-}
-
-
 // user login authentication
 
 userSchema.statics.findByCredentials = async (email,password)=>{
@@ -107,7 +93,7 @@ userSchema.pre('save', async function(next){
   if(user.isModified('password')){
     user.password = await bcrypt.hash(user.password,11)
   }
-
+  
   next()
 })
 

@@ -1,8 +1,8 @@
-const User = require("../../db/mongoose/models/user")
-const UserRepository = require("../../db/mongoose/repository/user.repository")
+const User = require("../../infra/db/mongoose/models/user")
+const UserRepository = require("../../infra/db/mongoose/repository/user.repository")
 const httpStatus = require("http-status")
 const ApiError = require("../../http/utils/ApiError");
-
+const generateAuthToken = require("../../infra/utils/jwt")
 class UserService{
     
     static async createUser(userBody){
@@ -12,7 +12,7 @@ class UserService{
             throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
         }
 
-        const me = await UserRepository.create(userBody);
+        const me = await UserRepository.add(userBody);
         
         return me;
     }
@@ -20,7 +20,7 @@ class UserService{
     static async userLogin(userBody){
 
         const userAuth = await User.findByCredentials(userBody.email,userBody.password)
-        const token = await userAuth.generateAuthToken()
+        const token = await generateAuthToken(userAuth)
         
         const loginObj = {userAuth,token}
 
@@ -42,13 +42,17 @@ class UserService{
 
     static async getFindUser(id){
 
-        const userID = await UserRepository.find(id);
-      
+        const userID = await UserRepository.find(id.getUserID());
+        if(!userID){
+            throw new ApiError(httpStatus.NOT_FOUND,"No User Found against this ID")
+        }
         return userID;
     }
 
     static async updateUser(userBody){
 
+        const updates = Object.keys(userBody);
+        const {user,body} = req;
         const {updates,user,body} = userBody;
         const propertiesUsers = ['name','email','password','age']
         const isValid = updates.every( update => propertiesUsers.includes(update))
@@ -63,12 +67,12 @@ class UserService{
         }
 
         return response;
+
     }
 
     static async deleteUser(delUser){
-        
 
-        await UserRepository.delete(delUser.user);
+        await UserRepository.remove(delUser.getUserID());
 
         const response = {
             message: "User Deleted Successfully!!!"

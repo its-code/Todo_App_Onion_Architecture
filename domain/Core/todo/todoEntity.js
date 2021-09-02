@@ -1,7 +1,7 @@
 class Todo {
 
-    constructor(_id,name,discription,owner,createdAt,updatedAt){
-        this._id = _id;
+    constructor(todoID,name,discription,owner,createdAt,updatedAt){
+        this.todoID = todoID;
         this.name = name;
         this.discription = discription;
         this.owner = owner;
@@ -22,9 +22,3 @@ class Todo {
 } 
 
 module.exports = Todo
-
-
-
-
-
-

@@ -1,6 +1,6 @@
 const faker = require("faker")
-const User = require("./db/mongoose/models/user")
-const Todo = require("./db/mongoose/models/todo")
+const User = require("./infra/db/mongoose/models/user")
+const Todo = require("./infra/db/mongoose/models/todo")
 
 const seedUsers = async () => {
 
@@ -14,6 +14,7 @@ const seedUsers = async () => {
 
         const quantity = 10;
         const users = [];
+
 
         for(let u=0; u<quantity; u++){
             users.push(
@@ -65,12 +66,14 @@ const seedTodos = async () => {
             )
         }
 
+        
 
         await Todo.remove()
 
         todos.forEach(todo => {
             Todo.create(todo)
         })
+
         console.log(todos)
 
         console.log("Todo collection has been populated!!");
@@ -80,6 +83,36 @@ const seedTodos = async () => {
     }
 }
 
-seedUsers();
-seedTodos();
+// const users = [];
+// const check = [...Array(users.push(
+//     new User({
+//        name: faker.internet.userName(),
+//        email: faker.internet.email(),
+//        password: faker.internet.password(),
+//        age: faker.datatype.number(),
+//     })
+// )).keys()]
+// console.log(...Array(users).values())
+// seedUsers();
+// seedTodos();
 
+// const dekho = [...users(10).push(
+//     new User({
+//        name: faker.internet.userName(),
+//        email: faker.internet.email(),
+//        password: faker.internet.password(),
+//        age: faker.datatype.number(),
+//     })
+// ).values()]
+
+// const dekho = [...Array(9).keys().push( 
+//     new User({
+//     name: faker.internet.userName(),
+//     email: faker.internet.email(),
+//     password: faker.internet.password(),
+//     age: faker.datatype.number(),
+//     })
+// )]
+
+const oka = [...Array(9).keys()]
+console.log(oka)

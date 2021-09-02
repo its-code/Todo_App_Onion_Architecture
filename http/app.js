@@ -1,6 +1,6 @@
 
 const express = require("express")
-require("../db/mongoose/mongoose")
+require("../infra/db/mongoose/mongoose")
 const userRouter = require("./routers/user")
 const todoRouter = require("./routers/todo")
 const authRouter = require("./routers/auth")
