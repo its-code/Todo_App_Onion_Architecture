@@ -1,10 +1,12 @@
+const User = require("../../../infra/db/mongoose/models/user")
+const generateAuthToken = require("../../../infra/utils/jwt")
 
 class AuthService{
 
     static async userLogin(userBody){
 
         const userAuth = await User.findByCredentials(userBody.email,userBody.password)
-        const token = await userAuth.generateAuthToken()
+        const token = await generateAuthToken(userAuth)
         
         const loginObj = {userAuth,token}
 

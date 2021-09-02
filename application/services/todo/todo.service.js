@@ -1,6 +1,6 @@
-const TodoRepository = require("../../infra/db/mongoose/repository/todo.repository");
+const TodoRepository = require("../../../infra/db/mongoose/repository/todo.repository");
 const httpStatus = require("http-status")
-const ApiError = require("../../http/utils/ApiError")
+const ApiError = require("../../../http/utils/ApiError")
 
 class TodoService {
     

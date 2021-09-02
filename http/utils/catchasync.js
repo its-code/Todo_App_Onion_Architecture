@@ -5,7 +5,7 @@ const catchAsync = (fn) => async (req, res, next) => {
           await fn(req,res,next)
     } 
     catch(err){
-
+      console.log(err)
       if(err instanceof ApiError){
        return  res.status(err.statusCode).send({ status: "error", message: err.message})
       }

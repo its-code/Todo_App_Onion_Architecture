@@ -1,4 +1,4 @@
-const TodoService = require("../../application/services/todo.service")
+const TodoService = require("../../application/services/todo/todo.service")
 const catchAsync = require("../utils/catchasync")
 const httpStatus = require("http-status")
 

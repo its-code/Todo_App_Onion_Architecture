@@ -1,4 +1,4 @@
-const User = require('../Core/user/userEntity');
+const User = require('../../../domain/Core/user/userEntity');
 
 class CreateUserDTO {
 

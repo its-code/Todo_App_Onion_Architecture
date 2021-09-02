@@ -1,5 +1,5 @@
 
-const AuthService = require("../../application/services/auth.service")
+const AuthService = require("../../application/services/auth/auth.service")
 const catchAsync = require("../utils/catchasync")
 const httpStatus = require("http-status")
 

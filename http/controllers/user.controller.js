@@ -1,10 +1,10 @@
-const UserService = require("../../application/services/user.service")
+const UserService = require("../../application/services/user/user.service")
 const catchAsync = require("../utils/catchasync")
 const httpStatus = require("http-status")
-const CreateUserDTO = require("../../domain/DTO/createUserDTO")
-const UpdateUserDTO = require("../../domain/DTO/updateUserDTO")
-const DeleteUserDTO = require("../../domain/DTO/deleteUserDTO")
-const GetUserDTO = require("../../domain/DTO/getUserDTO")
+const CreateUserDTO = require("../../application/services/user/createUserDTO")
+const UpdateUserDTO = require("../../application/services/user/updateUserDTO")
+const DeleteUserDTO = require("../../application/services/user/deleteUserDTO")
+const GetUserDTO = require("../../application/services/user/getUserDTO")
 
 class UserController{
 
@@ -15,21 +15,6 @@ class UserController{
         const user = await UserService.createUser(userDTO);
         
         res.status(httpStatus.CREATED).send(user);
-    });
-    
-    static userLogin = catchAsync(async (req,res) => {
-
-        const {email,password} = req.body;
-        const userAuth = await UserService.userLogin({email,password});
-        res.status(httpStatus.OK).send(userAuth)
-    });
-
-    static userLogOut = catchAsync(async (req,res) => {
-
-        const {user,token} = req
-        const {tokens} = req.user;
-        const userlogOut = await UserService.userLogOut({tokens,user,token})
-        res.status(httpStatus.OK).send(userlogOut)
     });
 
     static getFindUser = catchAsync(async (req,res) => {
@@ -42,9 +27,9 @@ class UserController{
     });
 
     static updateUser = catchAsync(async (req,res) => {
-
-        const upUserDTO = await UpdateUserDTO.create(req.body)
-        const userUpd = await UserService.updateUser(upUserDTO);
+        const {name, email, password, age} = req.body;
+        const upUserDTO = await UpdateUserDTO.create({name, email, password, age})
+        const userUpd = await UserService.updateUser(upUserDTO,req.user);
 
         res.status(httpStatus.OK).send(userUpd)
     });
