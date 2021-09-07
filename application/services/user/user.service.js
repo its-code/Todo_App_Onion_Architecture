@@ -17,16 +17,16 @@ class UserService{
         return me;
     }
 
-    static async getFindUser(id){
+    static async getFindUser(getUserDTO){
 
-        const userID = await UserRepository.find(id.getUserID());
+        const userID = await UserRepository.find(getUserDTO.getUserID());
         if(!userID){
             throw new ApiError(httpStatus.NOT_FOUND,"No User Found against this ID")
         }
         return userID;
     }
 
-    static async updateUser(updateUserDTO,user){
+    static async updateUser(updateUserDTO){
         
         const updates = Object.keys(updateUserDTO);
         const propertiesUsers = ['name','email','password','age']
@@ -35,17 +35,9 @@ class UserService{
         if(!isValid)
             throw new ApiError(httpStatus.BAD_REQUEST, "Inputs are Invalid!!!")
 
-        console.log(updates)
-        console.log("----------")
-        console.log(user)
-        console.log("----------")
-        console.log(updateUserDTO)
-        console.log("----------")
         const userEntity = UserEntity.createFromObject(updateUserDTO);
 
-        console.log(userEntity);
-
-        await UserRepository.update({updates,user,updateUserDTO})
+        await UserRepository.update({updates,user,userEntity})
         
         const response = {
             message: "User Updated Successfully!!!"

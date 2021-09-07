@@ -1,6 +1,7 @@
 class User {
 
-    constructor(name,email,age,createdAt,updatedAt){
+    constructor(userID,name,email,age,createdAt,updatedAt){
+        this.userID = userID;
         this.name = name;
         this.email = email;
         this.age = age;
@@ -10,6 +11,7 @@ class User {
 
     static createFromObject(userObj){
         return new User(
+            userObj.userID,
             userObj.name,
             userObj.email,
             userObj.age, 

@@ -37,6 +37,11 @@ class UserRepository{
       await user.remove();
     } 
 
+    static async findOne(authObj){
+      
+      const user = await user.findOne(authObj)
+      return user;
+    }
       
 }
 
