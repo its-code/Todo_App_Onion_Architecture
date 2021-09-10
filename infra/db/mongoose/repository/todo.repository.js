@@ -16,6 +16,12 @@ class TodoRepository{
       return todoEntity.createFromObject(todoID);
     }
 
+    static async fetch(todoObj){
+      const startIndex = (todoObj.page - 1) * todoObj.limit
+      const todos = await todos.find().limit(todoObj.limit).skip(startIndex).exec()
+      return todos;
+    }
+
     static async update(todoBody){
 
       const {updates,id,owner,body} = todoBody;

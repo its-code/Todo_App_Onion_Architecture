@@ -10,8 +10,13 @@ class TodoService {
         return todoCreated;
     }
 
-    static async findTodos(res){
-        res.json(res.paginatedResults)   
+    static async findTodos(todoDTO){
+
+        const todos = await TodoRepository.fetch({limit:todoDTO.limit(),page:todoDTO.getPage()});
+        if(!todos){
+            throw new ApiError(httpStatus.NOT_FOUND,"You dont have Todos against this ID!!")
+        }
+        return todos
     }
 
     static async findOneTodo(todoBody){

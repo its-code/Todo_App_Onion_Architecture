@@ -1,6 +1,7 @@
 const TodoService = require("../../application/services/todo/todo.service")
 const catchAsync = require("../utils/catchasync")
 const httpStatus = require("http-status")
+const GetTodosDTO = require("../../application/services/todo/getTodosDTO")
 
 class TodoController {
 
@@ -13,7 +14,11 @@ class TodoController {
     });
 
     static findTodos = catchAsync(async (req,res) =>{
-        const todo = await TodoService.findTodos(res);
+        const page = parseInt(req.query.page)
+        const limit = parseInt(req.query.limit)
+
+        const todoDTO = await GetTodosDTO(page,limit)
+        const todo = await TodoService.findTodos(todoDTO);
         res.status(httpStatus.OK).send(todo)
     });
 
