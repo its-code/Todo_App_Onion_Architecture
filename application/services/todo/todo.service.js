@@ -12,7 +12,7 @@ class TodoService {
 
     static async findTodos(todoDTO){
 
-        const todos = await TodoRepository.fetch({limit:todoDTO.limit(),page:todoDTO.getPage()});
+        const todos = await TodoRepository.fetch({limit:todoDTO.limit(),page:todoDTO.getPage(),offset:todoDTO.offset()});
         if(!todos){
             throw new ApiError(httpStatus.NOT_FOUND,"You dont have Todos against this ID!!")
         }

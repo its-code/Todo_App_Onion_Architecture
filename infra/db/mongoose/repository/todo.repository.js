@@ -17,8 +17,7 @@ class TodoRepository{
     }
 
     static async fetch(todoObj){
-      const startIndex = (todoObj.page - 1) * todoObj.limit
-      const todos = await todos.find().limit(todoObj.limit).skip(startIndex).exec()
+      const todos = await todos.find().limit(todoObj.limit).skip(todoObj.offset).exec()
       return todos;
     }
 
